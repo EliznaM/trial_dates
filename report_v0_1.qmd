@@ -1,0 +1,128 @@
+---
+title: "Trial visits"
+author: "Elizna Maasdorp"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format: 
+  html:
+    embed-resources: true
+    page-layout: full
+    fig-width: 24
+    fig-height: 18
+editor: source
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: false
+  warning: false
+  error: false
+---
+
+# Overview
+
+```{r}
+
+library(knitr)
+library(kableExtra)
+
+library(lubridate)
+library(tidyverse)
+
+conflicted::conflicts_prefer(dplyr::select(),
+                 dplyr::filter(),
+                 dplyr::rename())
+
+
+# colours
+
+themeCols <- tibble(hex5 = c("#30454E", "#db504a", "#F8CB15", "#72BAB4", 
+                            "#084c61" ))
+
+# ggplot theme
+
+chapTheme <- theme_classic() + 
+  theme(text = element_text(color = "grey30",
+                            size = 18),
+        line = element_line(color = "grey30", linewidth = 0.25),
+        rect = element_rect(color = "grey30", linewidth = 0.25),
+        panel.background = element_rect(colour = "grey70", linewidth = 2),
+        axis.line = element_blank(),
+        axis.ticks = element_blank(),
+        strip.background = element_rect(colour = "grey70",
+                                        linewidth = 0.25),
+        strip.text = element_text(colour = "grey30"))
+
+theme_set(chapTheme)
+
+
+```
+
+```{r prep}
+nr_enrol <- 4
+source("explore.R")
+
+```
+
+::: {.panel-tabset}
+
+## Enrol 4 per day
+
+Assumes enrolment for the first `r enrol_days` study days, with 10% enrolment failure rate, to make up 450 patients.  
+
+```{r}
+
+visit_days %>% 
+  count(type_visit, value) %>% 
+  ggplot(aes(value, n, fill = type_visit))+
+  geom_col()+
+  facet_wrap(~type_visit)+
+  scale_fill_manual(values = themeCols$hex5[c(2,3)])+
+  scale_y_continuous(breaks= seq(0, 30, by = 4))
+
+
+
+visit_days %>% 
+  count(type_visit, value) %>% 
+  ggplot(aes(value, n, fill = type_visit))+
+  geom_col()+
+  scale_fill_manual(values = themeCols$hex5[c(2,3)])+
+  scale_y_continuous(breaks= seq(0, 60, by = 3))
+
+```
+
+## Enrol 3 per day
+
+```{r}
+nr_enrol <- 3
+source("explore.R")
+
+```
+
+Assumes enrolment for the first `r enrol_days` study days, with 10% enrolment failure rate, to make up 450 patients.  
+
+```{r}
+
+
+visit_days %>% 
+  count(type_visit, value) %>% 
+  ggplot(aes(value, n, fill = type_visit))+
+  geom_col()+
+  facet_wrap(~type_visit)+
+  scale_fill_manual(values = themeCols$hex5[c(2,3)])+
+  scale_y_continuous(breaks= seq(0, 30, by = 3))
+
+visit_days %>% 
+  count(type_visit, value) %>% 
+  ggplot(aes(value, n, fill = type_visit))+
+  geom_col()+
+  scale_fill_manual(values = themeCols$hex5[c(2,3)])+
+  scale_y_continuous(breaks= seq(0, 60, by = 3))
+
+
+```
+
+
+
+
+
+:::
+
