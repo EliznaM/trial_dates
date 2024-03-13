@@ -166,10 +166,12 @@ make_visit_days <- function(enrol_ds = enrol_days(),
                       dplyr::mutate(visit_type = as.vector(xxtp))
                     
                     
+                    
+                    
                     visit_days1 <- visit_days1 %>% 
                       dplyr::mutate(date = tmp2,
                                     id = xid) %>% 
-                      dplyr::left_join(visit_types, by = visit_nr) %>% 
+                      dplyr::inner_join(visit_types, by = visit_nr) %>% 
                       dplyr::select(id, visit_nr, visit_type, study_day, date)
                     
                     return(visit_days1)
