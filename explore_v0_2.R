@@ -14,7 +14,7 @@ study_days <- unlist(ll)
 # study_days <- c(-6, study_days)
 
 # number of necessary enrolment days to reach 450
-# nr_enrol <- 4
+ nr_enrol <- 4
 x <- nr_enrol - 0.1*nr_enrol  # screen failure
 enrol_days <- ceiling(450/x)
 

@@ -109,15 +109,88 @@ visit_days %>%
 
 :::
 
-# Dates
+# Specific dates
 
 ```{r}
 
-visit_days
+start_date <- as_date("2024-05-01")
 
+visit_days <- visit_days %>% 
+  mutate(date = start_date + days(study_day))
+
+visit_days %>% 
+  # distinct(date) %>% 
+  # arrange(date) %>% 
+  print(n = Inf)
 
 ```
 
+
+# Dates per patient
+
+```{r}
+
+study_start_date <- as_date("2024-05-01")
+pt_start_date <- as_date("2024-07-04")
+festive_start <- 23
+festive_end <- 3
+
+
+interv <- study_start_date %--% pt_start_date
+pt_study_day <- as.duration(interv) / ddays(1)
+
+if(!pt_study_day %in% visit_days$study_day){
+  print("Patient start date does not fall on a study day")
+}
+
+x <- visit_days %>% 
+  distinct(visit_nr) %>% 
+  nrow()
+
+xx <- visit_days %>% 
+  count(visit_nr) %>% 
+  slice(1) %>% 
+  pull(n)
+
+ll <- vector("list", xx)
+for(i in 1:xx){
+ll[[i]] <- rep(i, x)  
+}
+ll <- unlist(ll)
+
+dec_jan <- c(paste0("12-", festive_start:31), 
+             paste0("01-", 1:festive_end))
+
+
+pt_days <- visit_days %>% 
+  select(-date) %>% 
+  mutate(id = ll,
+    date = study_start_date + days(study_day))
+    
+x <- map(dec_jan, ~str_which(pt_days$date, .x))    
+pt_days$dec_jan_holiday <- "normal"
+pt_days$dec_jan_holiday[unique(unlist(x))] <- "festive"
+
+x <- pt_days %>% 
+  filter(visit_nr == "v1" & date == pt_start_date) %>% 
+  slice(1) %>% 
+  pull(id)
+
+
+pt_days %>% 
+  filter(id %in% x) %>% 
+  ggplot(aes(date, factor(id), colour = type_visit,
+             shape = dec_jan_holiday))+
+  geom_point()+
+  scale_x_date(date_breaks = "1 week")+
+  theme(axis.text.x = element_text(angle = 90))
+
+
+  
+
+
+
+```
 
 
 
