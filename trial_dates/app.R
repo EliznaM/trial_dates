@@ -105,10 +105,10 @@ server <- function(input, output, session) {
         input$enrol_fail,
         input$visit_type)
     
-    x <- calc_enrol_days(enrol_per_d = input$enrol_per_day,
+    x1 <- calc_enrol_days(enrol_per_d = input$enrol_per_day,
                                           enrol_f = input$enrol_fail,
                     enrol_t = input$enrol_target)
-    x
+    x1
     })
     
    
