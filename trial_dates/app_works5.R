@@ -6,7 +6,6 @@
 library(shiny)
 library(magrittr)
 library(ggplot2)
-library(bslib)
 
 # Define UI
 ui <- fluidPage(
@@ -104,12 +103,10 @@ ui <- fluidPage(
     
     tabPanel("output 1",
       # textOutput("xx"),
-      layout_columns(
-        card(textOutput("enrol_days")),
+      textOutput("enrol_days"),
       # tableOutput("visit_days"),
       
-      card(downloadButton("download1", label = "Download visit dates"))
-      )
+      downloadButton("download1", label = "Download visit dates")
       
     ),
     # end of tabpanel
