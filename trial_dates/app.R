@@ -8,7 +8,7 @@ library(magrittr)
 library(ggplot2)
 library(bslib)
 
-# Define UI
+# Define UI ---------------------------
 ui <- fluidPage(
   
   tabsetPanel(
@@ -131,7 +131,7 @@ ui <- fluidPage(
 
 
 
-# Define server logic
+# Define server logic ---------------------------
 server <- function(input, output, session) {
   study_days <- reactive({
     req(input$days_of_week,
